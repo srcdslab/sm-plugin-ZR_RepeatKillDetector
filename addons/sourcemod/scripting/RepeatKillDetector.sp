@@ -1,28 +1,31 @@
 #pragma semicolon 1
+#pragma newdecls required
 
 #include <sourcemod>
 #include <zombiereloaded>
+#include <multicolors>
 
-#define PLUGIN_NAME "ZR Repeat Kill Detector"
-#define PLUGIN_VERSION "1.0.3"
+#define PLUGIN_NAME "[ZR] Repeat Kill Detector"
+#define WEAPONS_MAX_LENGTH 32
+#define PLUGIN_VERSION "1.0.4"
 
-new Handle:g_hCvar_RepeatKillDetectThreshold = INVALID_HANDLE;
-new Float:g_fRepeatKillDetectThreshold;
+bool g_bBlockRespawn = false;
 
-new Handle:g_hRespawnDelay = INVALID_HANDLE;
-new Float:g_fDeathTime[MAXPLAYERS+1];
-new bool:g_bBlockRespawn = false;
+ConVar g_hRespawnDelay;
+ConVar g_hCvar_RepeatKillDetectThreshold;
 
-public Plugin:myinfo =
-{
+float g_fDeathTime[MAXPLAYERS+1];
+float g_fRepeatKillDetectThreshold;
+
+public Plugin myinfo = {
 	name = PLUGIN_NAME,
-	author = "GoD-Tony + BotoX",
+	author = "GoD-Tony + BotoX + .Rushaway",
 	description = "Disables respawning on maps with repeat killers",
 	version = PLUGIN_VERSION,
 	url = "http://www.sourcemod.net/"
 };
 
-public OnAllPluginsLoaded()
+public void OnAllPluginsLoaded()
 {
 	if((g_hRespawnDelay = FindConVar("zr_respawn_delay")) == INVALID_HANDLE)
 		SetFailState("Failed to find zr_respawn_delay cvar.");
@@ -38,42 +41,42 @@ public OnAllPluginsLoaded()
 	AutoExecConfig(true);
 }
 
-public OnConVarChanged(Handle:cvar, const String:oldVal[], const String:newVal[])
+public void OnConVarChanged(ConVar CVar, const char[] oldVal, const char[] newVal)
 {
-	if(cvar == g_hCvar_RepeatKillDetectThreshold)
+	if(CVar == g_hCvar_RepeatKillDetectThreshold)
 	{
 		g_fRepeatKillDetectThreshold = GetConVarFloat(g_hCvar_RepeatKillDetectThreshold);
 	}
 }
 
-public OnClientDisconnect(client)
+public void OnClientDisconnect(int client)
 {
 	g_fDeathTime[client] = 0.0;
 }
 
-public Event_RoundStart(Handle:event, const String:name[], bool:dontBroadcast)
+public Action Event_RoundStart(Handle event, char[] name, bool dontBroadcast)
 {
 	g_bBlockRespawn = false;
 }
 
-public Event_PlayerDeath(Handle:event, const String:name[], bool:dontBroadcast)
+public Action Event_PlayerDeath(Handle event, char[] name, bool dontBroadcast)
 {
 	if(g_bBlockRespawn)
 		return;
 
-	decl String:weapon[32];
+	char weapon[WEAPONS_MAX_LENGTH];
 	GetEventString(event, "weapon", weapon, sizeof(weapon));
 
-	new victim = GetClientOfUserId(GetEventInt(event, "userid"));
-	new attacker = GetClientOfUserId(GetEventInt(event, "attacker"));
+	int victim = GetClientOfUserId(GetEventInt(event, "userid"));
+	int attacker = GetClientOfUserId(GetEventInt(event, "attacker"));
 
 	if(victim && !attacker && StrEqual(weapon, "trigger_hurt"))
 	{
-		new Float:fGameTime = GetGameTime();
+		float fGameTime = GetGameTime();
 
 		if(fGameTime - g_fDeathTime[victim] - GetConVarFloat(g_hRespawnDelay) < g_fRepeatKillDetectThreshold)
 		{
-			PrintToChatAll("\x04[ZR]\x01 Repeat killer detected. Disabling respawn for this round.");
+			CPrintToChatAll("{green}[ZR]{default} Repeat killer detected. Disabling respawn for this round.");
 			g_bBlockRespawn = true;
 		}
 
@@ -81,7 +84,7 @@ public Event_PlayerDeath(Handle:event, const String:name[], bool:dontBroadcast)
 	}
 }
 
-public Action:ZR_OnClientRespawn(&client, &ZR_RespawnCondition:condition)
+public Action ZR_OnClientRespawn(int &client, ZR_RespawnCondition& condition)
 {
 	if(g_bBlockRespawn)
 		return Plugin_Handled;
