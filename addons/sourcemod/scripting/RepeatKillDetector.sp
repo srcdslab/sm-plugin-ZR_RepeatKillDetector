@@ -7,7 +7,7 @@
 
 #define PLUGIN_NAME "[ZR] Repeat Kill Detector"
 #define WEAPONS_MAX_LENGTH 32
-#define PLUGIN_VERSION "1.0.4"
+#define PLUGIN_VERSION "1.1.0"
 
 bool g_bBlockRespawn = false;
 
@@ -39,6 +39,8 @@ public void OnAllPluginsLoaded()
 	HookEvent("player_death", Event_PlayerDeath, EventHookMode_Post);
 
 	AutoExecConfig(true);
+
+	RegAdminCmd("zr_killrepeator", Command_ForceRepeator, ADMFLAG_BAN, "Enable or Disable respawning for this round.");
 }
 
 public void OnConVarChanged(ConVar CVar, const char[] oldVal, const char[] newVal)
@@ -57,12 +59,46 @@ public void OnClientDisconnect(int client)
 public Action Event_RoundStart(Handle event, char[] name, bool dontBroadcast)
 {
 	g_bBlockRespawn = false;
+	return Plugin_Continue;
+}
+
+public Action Command_ForceRepeator(int client, int argc)
+{
+	if (argc < 1)
+	{
+		CReplyToCommand(client, "{green}[ZR] {default}Usage: zr_killrepeator {olive}<value>\n{green}[ZR] {default}For {green}Enabling {default}Kill repeator use : {olive}zr_killrepeator 1\n{green}[ZR] {default}For {green}Disabling {default}Kill repeator use : {olive}zr_killrepeator 0");
+		return Plugin_Handled;
+	}
+
+	char sArgs[20];
+	int value = -1;
+	bool bValue;
+
+	GetCmdArg(1, sArgs, sizeof(sArgs));
+
+	bValue = sArgs[0] == '0' ? true : false;
+
+	if(StringToIntEx(sArgs, value) == 0)
+	{
+		CReplyToCommand(client, "{green}[ZR]{default} Invalid Value.");
+		return Plugin_Handled;
+	}
+
+	CShowActivity2(client, "{green}[ZR] {olive}", "{green}%s{default} the Repeat killer protection. %s respawn for this round.", (value ? "Enabled" : "Disabled"), (value ? "Disabled" : "Enabled"));
+	LogAction(client, -1, "[ZR] %L %s the Repeat killer protection. \n[ZR]%s respawn for this round.", client, (value ? "Enabled" : "Disabled"), (value ? "Disabled" : "Enabled"));
+	
+	if(bValue)
+		g_bBlockRespawn = false;
+	else
+		g_bBlockRespawn = true;
+
+	return Plugin_Continue;
 }
 
 public Action Event_PlayerDeath(Handle event, char[] name, bool dontBroadcast)
 {
 	if(g_bBlockRespawn)
-		return;
+		return Plugin_Continue;
 
 	char weapon[WEAPONS_MAX_LENGTH];
 	GetEventString(event, "weapon", weapon, sizeof(weapon));
@@ -82,12 +118,16 @@ public Action Event_PlayerDeath(Handle event, char[] name, bool dontBroadcast)
 
 		g_fDeathTime[victim] = fGameTime;
 	}
+	return Plugin_Continue;
 }
 
 public Action ZR_OnClientRespawn(int &client, ZR_RespawnCondition& condition)
 {
 	if(g_bBlockRespawn)
+	{
+		CReplyToCommand(client, "{green}[ZR] {default}Repeat killer detected. The respawn for this round is {olive}disabled{default}.");
 		return Plugin_Handled;
+	}
 
 	return Plugin_Continue;
 }
