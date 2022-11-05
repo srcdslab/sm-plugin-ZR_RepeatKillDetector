@@ -2,12 +2,11 @@
 #pragma newdecls required
 
 #include <sourcemod>
+
 #include <zombiereloaded>
 #include <multicolors>
 
-#define PLUGIN_NAME "[ZR] Repeat Kill Detector"
 #define WEAPONS_MAX_LENGTH 32
-#define PLUGIN_VERSION "1.1.0"
 
 bool g_bBlockRespawn = false;
 
@@ -18,10 +17,10 @@ float g_fDeathTime[MAXPLAYERS+1];
 float g_fRepeatKillDetectThreshold;
 
 public Plugin myinfo = {
-	name = PLUGIN_NAME,
+	name = "[ZR] Repeat Kill Detector",
 	author = "GoD-Tony + BotoX + .Rushaway",
 	description = "Disables respawning on maps with repeat killers",
-	version = PLUGIN_VERSION,
+	version = "1.1.0",
 	url = "http://www.sourcemod.net/"
 };
 
@@ -34,7 +33,6 @@ public void OnAllPluginsLoaded()
 	g_fRepeatKillDetectThreshold = GetConVarFloat(g_hCvar_RepeatKillDetectThreshold);
 	HookConVarChange(g_hCvar_RepeatKillDetectThreshold, OnConVarChanged);
 
-	CreateConVar("zr_repeatkill_version", PLUGIN_VERSION, PLUGIN_NAME, FCVAR_NOTIFY|FCVAR_DONTRECORD);
 	HookEvent("round_start", Event_RoundStart, EventHookMode_PostNoCopy);
 	HookEvent("player_death", Event_PlayerDeath, EventHookMode_Post);
 
