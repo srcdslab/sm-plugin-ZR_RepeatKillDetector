@@ -27,7 +27,7 @@ public Plugin myinfo = {
 
 public APLRes AskPluginLoad2(Handle myself, bool late, char[] error, int err_max)
 {
-	CreateNative("RepeatKillerEnabled", Native_RepeatKillerEnabled);
+	CreateNative("ZR_RepeatKillDetector_Enabled", Native_RepeatKillerEnabled);
 	RegPluginLibrary("ZR_RepeatKillDetector");
 	return APLRes_Success;
 }

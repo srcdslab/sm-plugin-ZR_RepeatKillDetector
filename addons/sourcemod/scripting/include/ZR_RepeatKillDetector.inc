@@ -31,6 +31,6 @@ public SharedPlugin __pl_zr_repeatkilldetector =
 #if !defined REQUIRE_PLUGIN
 public void __pl_zr_repeatkilldetector_SetNTVOptional()
 {
-    MarkNativeAsOptional("RepeatKillerEnabled");
+    MarkNativeAsOptional("ZR_RepeatKillDetector_Enabled");
 }
 #endif
