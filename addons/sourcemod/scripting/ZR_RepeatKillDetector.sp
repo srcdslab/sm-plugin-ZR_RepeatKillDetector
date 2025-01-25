@@ -2,13 +2,14 @@
 #pragma newdecls required
 
 #include <sourcemod>
-
 #include <zombiereloaded>
+#include <ZR_RepeatKillDetector>
 #include <multicolors>
 
 #define WEAPONS_MAX_LENGTH 32
 
 bool g_bBlockRespawn = false;
+bool g_bZombieSpawned = false;
 
 ConVar g_hRespawnDelay;
 ConVar g_hCvar_RepeatKillDetectThreshold;
@@ -18,11 +19,30 @@ float g_fRepeatKillDetectThreshold;
 
 public Plugin myinfo = {
 	name = "[ZR] Repeat Kill Detector",
-	author = "GoD-Tony + BotoX + .Rushaway",
+	author = "GoD-Tony + BotoX + .Rushaway, Vauff",
 	description = "Disables respawning on maps with repeat killers",
-	version = "1.1.0",
+	version = ZR_RKD_VERSION,
 	url = "http://www.sourcemod.net/"
 };
+
+public APLRes AskPluginLoad2(Handle myself, bool late, char[] error, int err_max)
+{
+	CreateNative("RepeatKillerEnabled", Native_RepeatKillerEnabled);
+	RegPluginLibrary("ZR_RepeatKillDetector");
+	return APLRes_Success;
+}
+
+public void OnPluginStart()
+{
+	RegAdminCmd("zr_killrepeator", Command_ForceRepeator, ADMFLAG_BAN, "Enable or Disable respawning for this round.");
+
+	RegAdminCmd("sm_togglerepeatkill", Command_RkON, ADMFLAG_GENERIC, "Turns off the repeat killer detector if it is enabled");
+	RegAdminCmd("sm_togglerk", Command_RkON, ADMFLAG_GENERIC, "Turns off the repeat killer detector if it is enabled");
+	RegAdminCmd("sm_rk", Command_RkON, ADMFLAG_GENERIC, "Turns off the repeat killer detector if it is enabled");
+	RegAdminCmd("sm_rkoff", Command_RkON, ADMFLAG_GENERIC, "Turns off the repeat killer detector if it is enabled");
+
+	RegAdminCmd("sm_rkon", Command_RkOFF, ADMFLAG_BAN, "Turns on the repeat killer detector if it is disabled");
+}
 
 public void OnAllPluginsLoaded()
 {
@@ -37,8 +57,6 @@ public void OnAllPluginsLoaded()
 	HookEvent("player_death", Event_PlayerDeath, EventHookMode_Post);
 
 	AutoExecConfig(true);
-
-	RegAdminCmd("zr_killrepeator", Command_ForceRepeator, ADMFLAG_BAN, "Enable or Disable respawning for this round.");
 }
 
 public void OnConVarChanged(ConVar CVar, const char[] oldVal, const char[] newVal)
@@ -46,6 +64,30 @@ public void OnConVarChanged(ConVar CVar, const char[] oldVal, const char[] newVa
 	if(CVar == g_hCvar_RepeatKillDetectThreshold)
 	{
 		g_fRepeatKillDetectThreshold = GetConVarFloat(g_hCvar_RepeatKillDetectThreshold);
+	}
+}
+
+stock void ToggleRepeatKill(int client, bool value)
+{
+	if (value && !g_bBlockRespawn)
+	{
+		g_bBlockRespawn = true;
+		LogAction(client, -1, "[ZR] %L Enabled the Repeat killer protection. Disabling respawn for this round.", client);
+		CPrintToChatAll("{green}[ZR]{default} Repeat killer detector force toggled on. Disabling respawn for this round.");
+	}
+	else
+	{
+		if (g_bBlockRespawn)
+		{
+			g_bBlockRespawn = false;
+			LogAction(client, -1, "[ZR] %L %s the Repeat killer protection. \n[ZR] %s respawn for this round.", client, (value ? "Enabled" : "Disabled"), (value ? "Disabled" : "Enabled"));
+			CPrintToChatAll("{green}[ZR]{default} Repeat killer detector force toggled off. Re-enabling respawn for this round.");
+			RespawnAllClients();
+		}
+		else
+		{
+			CPrintToChat(client, "{green}[ZR]{default} Repeat killer is already turned off!");
+		}
 	}
 }
 
@@ -57,6 +99,7 @@ public void OnClientDisconnect(int client)
 public Action Event_RoundStart(Handle event, char[] name, bool dontBroadcast)
 {
 	g_bBlockRespawn = false;
+	g_bZombieSpawned =  false;
 	return Plugin_Continue;
 }
 
@@ -64,7 +107,8 @@ public Action Command_ForceRepeator(int client, int argc)
 {
 	if (argc < 1)
 	{
-		CReplyToCommand(client, "{green}[ZR] {default}Usage: zr_killrepeator {olive}<value>\n{green}[ZR] {default}For {green}Enabling {default}Kill repeator use : {olive}zr_killrepeator 1\n{green}[ZR] {default}For {green}Disabling {default}Kill repeator use : {olive}zr_killrepeator 0");
+		CReplyToCommand(client, "{green}[ZR] {default}Usage: zr_killrepeator {olive}<0|1>");
+		CReplyToCommand(client, "{green}[ZR] {red}0 = Block respawn {default}| {green}1 = Allow respawn");
 		return Plugin_Handled;
 	}
 
@@ -82,15 +126,21 @@ public Action Command_ForceRepeator(int client, int argc)
 		return Plugin_Handled;
 	}
 
-	CShowActivity2(client, "{green}[ZR] {olive}", "{green}%s{default} the Repeat killer protection. %s respawn for this round.", (value ? "Enabled" : "Disabled"), (value ? "Disabled" : "Enabled"));
-	LogAction(client, -1, "[ZR] %L %s the Repeat killer protection. \n[ZR]%s respawn for this round.", client, (value ? "Enabled" : "Disabled"), (value ? "Disabled" : "Enabled"));
-	
-	if(bValue)
-		g_bBlockRespawn = false;
-	else
-		g_bBlockRespawn = true;
+	ToggleRepeatKill(client, bValue);
 
 	return Plugin_Continue;
+}
+
+public Action Command_RkON(int client, int argc)
+{
+	ToggleRepeatKill(client, false);
+	return Plugin_Handled;
+}
+
+public Action Command_RkOFF(int client, int argc)
+{
+	ToggleRepeatKill(client, true);
+	return Plugin_Handled;
 }
 
 public Action Event_PlayerDeath(Handle event, char[] name, bool dontBroadcast)
@@ -119,6 +169,14 @@ public Action Event_PlayerDeath(Handle event, char[] name, bool dontBroadcast)
 	return Plugin_Continue;
 }
 
+public Action ZR_OnClientInfect(int &client, int &attacker, bool &motherInfect, bool &respawnOverride, bool &respawn)
+{
+	if (motherInfect)
+		g_bZombieSpawned = true;
+
+	return Plugin_Continue;
+}
+
 public Action ZR_OnClientRespawn(int &client, ZR_RespawnCondition& condition)
 {
 	if(g_bBlockRespawn)
@@ -128,4 +186,21 @@ public Action ZR_OnClientRespawn(int &client, ZR_RespawnCondition& condition)
 	}
 
 	return Plugin_Continue;
+}
+
+stock void RespawnAllClients()
+{
+	for (int i = 1; i < MaxClients; i++)
+	{
+		if(!IsClientInGame(i))
+			continue;
+
+		if(!IsPlayerAlive(i) && GetClientTeam(i) > 1)
+			ZR_RespawnClient(i, g_bZombieSpawned ? ZR_Respawn_Zombie : ZR_Repsawn_Default);
+	}
+}
+
+public int Native_RepeatKillerEnabled(Handle plugin, int params)
+{
+	return g_bBlockRespawn;
 }
