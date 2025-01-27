@@ -36,11 +36,8 @@ public void OnPluginStart()
 {
 	RegAdminCmd("zr_killrepeator", Command_ForceRepeator, ADMFLAG_BAN, "Enable or Disable respawning for this round.");
 
-	RegAdminCmd("sm_togglerepeatkill", Command_RkON, ADMFLAG_GENERIC, "Turns off the repeat killer detector if it is enabled");
-	RegAdminCmd("sm_togglerk", Command_RkON, ADMFLAG_GENERIC, "Turns off the repeat killer detector if it is enabled");
 	RegAdminCmd("sm_rk", Command_RkON, ADMFLAG_GENERIC, "Turns off the repeat killer detector if it is enabled");
 	RegAdminCmd("sm_rkoff", Command_RkON, ADMFLAG_GENERIC, "Turns off the repeat killer detector if it is enabled");
-
 	RegAdminCmd("sm_rkon", Command_RkOFF, ADMFLAG_BAN, "Turns on the repeat killer detector if it is disabled");
 }
 
