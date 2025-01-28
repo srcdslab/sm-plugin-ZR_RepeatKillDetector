@@ -4,18 +4,18 @@
 #define _zr_repeatkilldetector_included
 
 // Version information
-#define ZR_RKD_V_MAJOR   1
-#define ZR_RKD_V_MINOR   2
-#define ZR_RKD_V_PATCH   0
+#define ZR_RKD_V_MAJOR   "1"
+#define ZR_RKD_V_MINOR   "2"
+#define ZR_RKD_V_PATCH   "0"
 
-#define ZR_RKD_VERSION   "1.2.0"
+#define ZR_RKD_VERSION   ZR_RKD_V_MAJOR..."."...ZR_RKD_V_MINOR..."."...ZR_RKD_V_PATCH
 
 /**
  * Checks if the repeat killer protection is currently enabled.
  *
  * @return          True if repeat killer protection is enabled, false otherwise
  */
-native bool RepeatKillerEnabled();
+native bool ZR_RepeatKillDetector_Enabled();
 
 public SharedPlugin __pl_zr_repeatkilldetector = 
 {
