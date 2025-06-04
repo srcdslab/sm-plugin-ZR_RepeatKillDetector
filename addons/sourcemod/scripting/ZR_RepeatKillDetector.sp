@@ -34,6 +34,8 @@ public APLRes AskPluginLoad2(Handle myself, bool late, char[] error, int err_max
 
 public void OnPluginStart()
 {
+	LoadTranslations("ZR_RepeatKillDetector.phrases");
+	
 	RegAdminCmd("zr_killrepeator", Command_ForceRepeator, ADMFLAG_BAN, "Enable or Disable respawning for this round.");
 
 	RegAdminCmd("sm_rk", Command_RkON, ADMFLAG_GENERIC, "Turns off the repeat killer detector if it is enabled");
@@ -70,7 +72,7 @@ stock void ToggleRepeatKill(int client, bool value)
 	{
 		g_bBlockRespawn = true;
 		LogAction(client, -1, "[ZR] %L Enabled the Repeat killer protection. Disabling respawn for this round.", client);
-		CPrintToChatAll("{green}[ZR]{default} Repeat killer detector force toggled on. Disabling respawn for this round.");
+		CPrintToChatAll("{green}[ZR]{default} %t", "Repeat Killer Protection Enabled");
 	}
 	else
 	{
@@ -78,12 +80,12 @@ stock void ToggleRepeatKill(int client, bool value)
 		{
 			g_bBlockRespawn = false;
 			LogAction(client, -1, "[ZR] %L %s the Repeat killer protection. \n[ZR] %s respawn for this round.", client, (value ? "Enabled" : "Disabled"), (value ? "Disabled" : "Enabled"));
-			CPrintToChatAll("{green}[ZR]{default} Repeat killer detector force toggled off. Re-enabling respawn for this round.");
+			CPrintToChatAll("{green}[ZR]{default} %t", "Repeat Killer Protection Disabled");
 			RespawnAllClients();
 		}
 		else
 		{
-			CPrintToChat(client, "{green}[ZR]{default} Repeat killer is already turned off!");
+			CPrintToChat(client, "{green}[ZR]{default} %t", "Repeat Killer Already Off");
 		}
 	}
 }
@@ -104,8 +106,8 @@ public Action Command_ForceRepeator(int client, int argc)
 {
 	if (argc < 1)
 	{
-		CReplyToCommand(client, "{green}[ZR] {default}Usage: zr_killrepeator {olive}<0|1>");
-		CReplyToCommand(client, "{green}[ZR] {red}0 = Block respawn {default}| {green}1 = Allow respawn");
+		CReplyToCommand(client, "{green}[ZR] {default}%t", "Usage");
+		CReplyToCommand(client, "{green}[ZR] {red}%t", "Usage Values");
 		return Plugin_Handled;
 	}
 
@@ -119,7 +121,7 @@ public Action Command_ForceRepeator(int client, int argc)
 
 	if(StringToIntEx(sArgs, value) == 0)
 	{
-		CReplyToCommand(client, "{green}[ZR]{default} Invalid Value.");
+		CReplyToCommand(client, "{green}[ZR]{default} %t", "Invalid Value");
 		return Plugin_Handled;
 	}
 
@@ -157,7 +159,7 @@ public Action Event_PlayerDeath(Handle event, char[] name, bool dontBroadcast)
 
 		if(fGameTime - g_fDeathTime[victim] - GetConVarFloat(g_hRespawnDelay) < g_fRepeatKillDetectThreshold)
 		{
-			CPrintToChatAll("{green}[ZR]{default} Repeat killer detected. Disabling respawn for this round.");
+			CPrintToChatAll("{green}[ZR]{default} %t", "Repeat Killer Detected");
 			g_bBlockRespawn = true;
 		}
 
@@ -178,7 +180,7 @@ public Action ZR_OnClientRespawn(int &client, ZR_RespawnCondition& condition)
 {
 	if(g_bBlockRespawn)
 	{
-		CReplyToCommand(client, "{green}[ZR] {default}Repeat killer detected. The respawn for this round is {olive}disabled{default}.");
+		CReplyToCommand(client, "{green}[ZR] {default}%t", "Respawn Disabled");
 		return Plugin_Handled;
 	}
 
