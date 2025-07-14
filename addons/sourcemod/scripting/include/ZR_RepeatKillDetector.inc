@@ -6,7 +6,7 @@
 // Version information
 #define ZR_RKD_V_MAJOR   "1"
 #define ZR_RKD_V_MINOR   "2"
-#define ZR_RKD_V_PATCH   "1"
+#define ZR_RKD_V_PATCH   "2"
 
 #define ZR_RKD_VERSION   ZR_RKD_V_MAJOR..."."...ZR_RKD_V_MINOR..."."...ZR_RKD_V_PATCH
 
