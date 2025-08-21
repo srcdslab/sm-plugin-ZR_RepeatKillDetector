@@ -168,10 +168,12 @@ public Action Event_PlayerDeath(Handle event, char[] name, bool dontBroadcast)
 	return Plugin_Continue;
 }
 
-public void ZR_OnClientInfected(int client, int attacker, bool motherInfect, bool respawnOverride, bool respawn)
+public Action ZR_OnClientInfect(int &client, int &attacker, bool &motherInfect, bool &respawnOverride, bool &respawn)
 {
 	if (motherInfect)
 		g_bZombieSpawned = true;
+
+	return Plugin_Continue;
 }
 
 public Action ZR_OnClientRespawn(int &client, ZR_RespawnCondition& condition)
