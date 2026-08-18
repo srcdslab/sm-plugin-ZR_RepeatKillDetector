@@ -12,9 +12,9 @@ This repository contains a SourcePawn plugin for SourceMod that implements repea
 
 ## Technical Environment
 - **Language**: SourcePawn
-- **Platform**: SourceMod 1.11.0+ (this project uses 1.11.0-git6934)
-- **Build System**: SourceKnight (modern SourcePawn build tool)
-- **Compiler**: SourcePawn compiler via SourceKnight
+- **Platform**: SourceMod 1.12.x
+- **Build System**: Native GitHub Actions (rumblefrog/setup-sp)
+- **Compiler**: spcomp via rumblefrog/setup-sp
 - **Dependencies**:
   - SourceMod 1.11.0+
   - MultiColors (chat colors)
@@ -32,8 +32,7 @@ addons/sourcemod/
 ```
 
 **Build Configuration:**
-- `sourceknight.yaml` - Build configuration and dependencies
-- `.github/workflows/ci.yml` - Automated CI/CD pipeline
+- `.github/workflows/ci.yml` - Automated CI/CD pipeline (checkout, setup-sp, spcomp, package, release)
 - Target output: `addons/sourcemod/plugins/ZR_RepeatKillDetector.smx`
 
 ## Code Style & Standards
@@ -90,13 +89,14 @@ addons/sourcemod/
 
 ## Build & Validation Process
 **Local Development:**
-1. Install SourceKnight: Follow SourceKnight documentation
-2. Build: `sourceknight build` (builds all targets in sourceknight.yaml)
-3. Output: Compiled .smx files in configured output directory
+1. Install the SourcePawn compiler (`spcomp`) matching SourceMod 1.12.x, or rely on CI.
+2. Build: `spcomp -i include -o ../plugins/ZR_RepeatKillDetector.smx ZR_RepeatKillDetector.sp` from `addons/sourcemod/scripting`.
+3. Output: Compiled `.smx` file in `addons/sourcemod/plugins`.
 
 **CI/CD Pipeline:**
-- Automatic building on push/PR via GitHub Actions
-- Uses `maxime1907/action-sourceknight@v1` action
+- Automatic building on push/PR via GitHub Actions (`.github/workflows/ci.yml`)
+- Uses `rumblefrog/setup-sp@v1.3.1` to install the SourcePawn compiler (SourceMod 1.12.x)
+- Fetches MultiColors and ZombieReloaded includes via `git clone`
 - Creates release packages with proper directory structure
 - Includes translations and compiled plugins
 
