@@ -116,13 +116,13 @@ public Action Command_ForceRepeator(int client, int argc)
 
 	GetCmdArg(1, sArgs, sizeof(sArgs));
 
-	if(StringToIntEx(sArgs, value) == 0)
+	if(StringToIntEx(sArgs, value) != strlen(sArgs))
 	{
 		CReplyToCommand(client, "{green}[ZR]{default} %t", "Invalid Value");
 		return Plugin_Handled;
 	}
 
-	ToggleRepeatKill(client, value != 0);
+	ToggleRepeatKill(client, value == 0);
 
 	return Plugin_Continue;
 }
