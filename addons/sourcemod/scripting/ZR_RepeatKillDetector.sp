@@ -113,19 +113,16 @@ public Action Command_ForceRepeator(int client, int argc)
 
 	char sArgs[20];
 	int value = -1;
-	bool bValue;
 
 	GetCmdArg(1, sArgs, sizeof(sArgs));
 
-	bValue = sArgs[0] == '0' ? true : false;
-
-	if(StringToIntEx(sArgs, value) == 0)
+	if(StringToIntEx(sArgs, value) != strlen(sArgs))
 	{
 		CReplyToCommand(client, "{green}[ZR]{default} %t", "Invalid Value");
 		return Plugin_Handled;
 	}
 
-	ToggleRepeatKill(client, bValue);
+	ToggleRepeatKill(client, value == 0);
 
 	return Plugin_Continue;
 }
@@ -187,7 +184,7 @@ public Action ZR_OnClientRespawn(int &client, ZR_RespawnCondition& condition)
 
 stock void RespawnAllClients()
 {
-	for (int i = 1; i < MaxClients; i++)
+	for (int i = 1; i <= MaxClients; i++)
 	{
 		if(!IsClientInGame(i))
 			continue;
