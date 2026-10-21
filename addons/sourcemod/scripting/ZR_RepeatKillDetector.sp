@@ -45,12 +45,12 @@ public void OnPluginStart()
 
 public void OnAllPluginsLoaded()
 {
-	if((g_hRespawnDelay = FindConVar("zr_respawn_delay")) == INVALID_HANDLE)
+	if((g_hRespawnDelay = FindConVar("zr_respawn_delay")) == null)
 		SetFailState("Failed to find zr_respawn_delay cvar.");
 
 	g_hCvar_RepeatKillDetectThreshold = CreateConVar("zr_repeatkill_threshold", "1.0", "Zombie Reloaded Repeat Kill Detector Threshold", 0, true, 0.0, true, 10.0);
-	g_fRepeatKillDetectThreshold = GetConVarFloat(g_hCvar_RepeatKillDetectThreshold);
-	HookConVarChange(g_hCvar_RepeatKillDetectThreshold, OnConVarChanged);
+	g_fRepeatKillDetectThreshold = g_hCvar_RepeatKillDetectThreshold.FloatValue;
+	g_hCvar_RepeatKillDetectThreshold.AddChangeHook(OnConVarChanged);
 
 	HookEvent("round_start", Event_RoundStart, EventHookMode_PostNoCopy);
 	HookEvent("player_death", Event_PlayerDeath, EventHookMode_Post);
@@ -62,7 +62,7 @@ public void OnConVarChanged(ConVar CVar, const char[] oldVal, const char[] newVa
 {
 	if(CVar == g_hCvar_RepeatKillDetectThreshold)
 	{
-		g_fRepeatKillDetectThreshold = GetConVarFloat(g_hCvar_RepeatKillDetectThreshold);
+		g_fRepeatKillDetectThreshold = g_hCvar_RepeatKillDetectThreshold.FloatValue;
 	}
 }
 
@@ -95,7 +95,7 @@ public void OnClientDisconnect(int client)
 	g_fDeathTime[client] = 0.0;
 }
 
-public Action Event_RoundStart(Handle event, char[] name, bool dontBroadcast)
+public Action Event_RoundStart(Event event, char[] name, bool dontBroadcast)
 {
 	g_bBlockRespawn = false;
 	g_bZombieSpawned =  false;
@@ -139,22 +139,22 @@ public Action Command_RkOFF(int client, int argc)
 	return Plugin_Handled;
 }
 
-public Action Event_PlayerDeath(Handle event, char[] name, bool dontBroadcast)
+public Action Event_PlayerDeath(Event event, char[] name, bool dontBroadcast)
 {
 	if(g_bBlockRespawn)
 		return Plugin_Continue;
 
 	char weapon[WEAPONS_MAX_LENGTH];
-	GetEventString(event, "weapon", weapon, sizeof(weapon));
+	event.GetString("weapon", weapon, sizeof(weapon));
 
-	int victim = GetClientOfUserId(GetEventInt(event, "userid"));
-	int attacker = GetClientOfUserId(GetEventInt(event, "attacker"));
+	int victim = GetClientOfUserId(event.GetInt("userid"));
+	int attacker = GetClientOfUserId(event.GetInt("attacker"));
 
 	if(victim && !attacker && StrEqual(weapon, "trigger_hurt"))
 	{
 		float fGameTime = GetGameTime();
 
-		if(fGameTime - g_fDeathTime[victim] - GetConVarFloat(g_hRespawnDelay) < g_fRepeatKillDetectThreshold)
+		if(fGameTime - g_fDeathTime[victim] - g_hRespawnDelay.FloatValue < g_fRepeatKillDetectThreshold)
 		{
 			CPrintToChatAll("{green}[ZR]{default} %t", "Repeat Killer Detected");
 			g_bBlockRespawn = true;
