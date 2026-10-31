@@ -7,6 +7,8 @@
         "es"        "Asesino en serie detectado. Desactivando la reaparición para esta ronda."
         "chi"       "检测到连续击杀者。本轮禁用重生。"
         "ru"        "Обнаружен серийный убийца. Отключение возрождения на этот раунд."
+        "de"        "Repeat-Killer erkannt. Respawn für diese Runde deaktiviert."
+        "pt"        "Assassino em série detectado. Desativando o respawn nesta rodada."
     }
     "Repeat Killer Protection Enabled"
     {
@@ -15,6 +17,8 @@
         "es"        "Detector de asesino en serie activado. Desactivando la reaparición para esta ronda."
         "chi"       "强制开启连续击杀检测器。本轮禁用重生。"
         "ru"        "Детектор серийного убийцы принудительно включен. Отключение возрождения на этот раунд."
+        "de"        "Repeat-Killer-Erkennung manuell aktiviert. Respawn für diese Runde deaktiviert."
+        "pt"        "Detector de assassino em série ativado manualmente. Desativando o respawn nesta rodada."
     }
     "Repeat Killer Protection Disabled"
     {
@@ -23,6 +27,8 @@
         "es"        "Detector de asesino en serie desactivado. Reactivando la reaparición para esta ronda."
         "chi"       "强制关闭连续击杀检测器。本轮重新启用重生。"
         "ru"        "Детектор серийного убийцы принудительно выключен. Включение возрождения на этот раунд."
+        "de"        "Repeat-Killer-Erkennung manuell deaktiviert. Respawn für diese Runde wieder aktiviert."
+        "pt"        "Detector de assassino em série desativado manualmente. Reativando o respawn nesta rodada."
     }
     "Repeat Killer Already Off"
     {
@@ -31,14 +37,18 @@
         "es"        "¡El detector de asesino en serie ya está desactivado!"
         "chi"       "连续击杀检测器已经关闭！"
         "ru"        "Детектор серийного убийцы уже выключен!"
+        "de"        "Die Repeat-Killer-Erkennung ist bereits deaktiviert!"
+        "pt"        "O detector de assassino em série já está desativado!"
     }
     "Invalid Value"
     {
-        "en"        "Invalid Value."
+        "en"        "Invalid value."
         "fr"        "Valeur invalide."
         "es"        "Valor inválido."
         "chi"       "无效值。"
         "ru"        "Неверное значение."
+        "de"        "Ungültiger Wert."
+        "pt"        "Valor inválido."
     }
     "Usage"
     {
@@ -47,6 +57,8 @@
         "es"        "Uso: zr_killrepeator <0|1>"
         "chi"       "用法：zr_killrepeator <0|1>"
         "ru"        "Использование: zr_killrepeator <0|1>"
+        "de"        "Verwendung: zr_killrepeator <0|1>"
+        "pt"        "Uso: zr_killrepeator <0|1>"
     }
     "Usage Values"
     {
@@ -55,6 +67,8 @@
         "es"        "0 = Bloquear reaparición | 1 = Permitir reaparición"
         "chi"       "0 = 阻止重生 | 1 = 允许重生"
         "ru"        "0 = Блокировать возрождение | 1 = Разрешить возрождение"
+        "de"        "0 = Respawn blockieren | 1 = Respawn erlauben"
+        "pt"        "0 = Bloquear respawn | 1 = Permitir respawn"
     }
     "Respawn Disabled"
     {
@@ -63,5 +77,7 @@
         "es"        "Asesino en serie detectado. La reaparición para esta ronda está desactivada."
         "chi"       "检测到连续击杀者。本轮重生已禁用。"
         "ru"        "Обнаружен серийный убийца. Возрождение на этот раунд отключено."
+        "de"        "Repeat-Killer erkannt. Der Respawn für diese Runde ist deaktiviert."
+        "pt"        "Assassino em série detectado. O respawn nesta rodada está desativado."
     }
 } 
