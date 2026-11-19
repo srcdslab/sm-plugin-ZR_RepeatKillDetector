@@ -9,6 +9,12 @@
         "ru"        "Обнаружен серийный убийца. Отключение возрождения на этот раунд."
         "de"        "Repeat-Killer erkannt. Respawn für diese Runde deaktiviert."
         "pt"        "Assassino em série detectado. Desativando o respawn nesta rodada."
+        "pl"        "Wykryto powtarzającego zabójcę. Odrodzenie wyłączone na tę rundę."
+        "tr"        "Tekrarlayan katil tespit edildi. Bu tur için yeniden doğma devre dışı."
+        "it"        "Killer ricorrente rilevato. Respawn disattivato per questo round."
+        "ua"        "Виявлено серійного вбивцю. Відродження вимкнено на цей раунд."
+        "zho"       "偵測到連續殺手。本回合已停用重生。"
+        "cze"       "Detekován opakovaný zabiják. Respawn je pro toto kolo vypnut."
     }
     "Repeat Killer Protection Enabled"
     {
@@ -19,6 +25,12 @@
         "ru"        "Детектор серийного убийцы принудительно включен. Отключение возрождения на этот раунд."
         "de"        "Repeat-Killer-Erkennung manuell aktiviert. Respawn für diese Runde deaktiviert."
         "pt"        "Detector de assassino em série ativado manualmente. Desativando o respawn nesta rodada."
+        "pl"        "Detektor powtarzającego zabójcy włączony ręcznie. Odrodzenie wyłączone na tę rundę."
+        "tr"        "Tekrarlayan katil dedektörü elle açıldı. Bu tur için yeniden doğma devre dışı."
+        "it"        "Rilevatore di killer ricorrente attivato manualmente. Respawn disattivato per questo round."
+        "ua"        "Детектор серійного вбивці примусово ввімкнено. Відродження вимкнено на цей раунд."
+        "zho"       "已手動啟用連續殺手偵測。本回合已停用重生。"
+        "cze"       "Detektor opakovaného zabijáka byl ručně zapnut. Respawn je pro toto kolo vypnut."
     }
     "Repeat Killer Protection Disabled"
     {
@@ -29,6 +41,12 @@
         "ru"        "Детектор серийного убийцы принудительно выключен. Включение возрождения на этот раунд."
         "de"        "Repeat-Killer-Erkennung manuell deaktiviert. Respawn für diese Runde wieder aktiviert."
         "pt"        "Detector de assassino em série desativado manualmente. Reativando o respawn nesta rodada."
+        "pl"        "Detektor powtarzającego zabójcy wyłączony ręcznie. Odrodzenie ponownie włączone na tę rundę."
+        "tr"        "Tekrarlayan katil dedektörü elle kapatıldı. Bu tur için yeniden doğma tekrar etkin."
+        "it"        "Rilevatore di killer ricorrente disattivato manualmente. Respawn riattivato per questo round."
+        "ua"        "Детектор серійного вбивці примусово вимкнено. Відродження знову ввімкнено на цей раунд."
+        "zho"       "已手動停用連續殺手偵測。本回合已重新啟用重生。"
+        "cze"       "Detektor opakovaného zabijáka byl ručně vypnut. Respawn je pro toto kolo opět zapnut."
     }
     "Repeat Killer Already Off"
     {
@@ -39,6 +57,12 @@
         "ru"        "Детектор серийного убийцы уже выключен!"
         "de"        "Die Repeat-Killer-Erkennung ist bereits deaktiviert!"
         "pt"        "O detector de assassino em série já está desativado!"
+        "pl"        "Detektor powtarzającego zabójcy jest już wyłączony!"
+        "tr"        "Tekrarlayan katil dedektörü zaten kapalı!"
+        "it"        "Il rilevatore di killer ricorrente è già disattivato!"
+        "ua"        "Детектор серійного вбивці вже вимкнено!"
+        "zho"       "連續殺手偵測已經是關閉狀態!"
+        "cze"       "Detektor opakovaného zabijáka je již vypnut!"
     }
     "Invalid Value"
     {
@@ -49,6 +73,12 @@
         "ru"        "Неверное значение."
         "de"        "Ungültiger Wert."
         "pt"        "Valor inválido."
+        "pl"        "Nieprawidłowa wartość."
+        "tr"        "Geçersiz değer."
+        "it"        "Valore non valido."
+        "ua"        "Недійсне значення."
+        "zho"       "無效的數值。"
+        "cze"       "Neplatná hodnota."
     }
     "Usage"
     {
@@ -59,6 +89,12 @@
         "ru"        "Использование: zr_killrepeator <0|1>"
         "de"        "Verwendung: zr_killrepeator <0|1>"
         "pt"        "Uso: zr_killrepeator <0|1>"
+        "pl"        "Użycie: zr_killrepeator <0|1>"
+        "tr"        "Kullanım: zr_killrepeator <0|1>"
+        "it"        "Uso: zr_killrepeator <0|1>"
+        "ua"        "Використання: zr_killrepeator <0|1>"
+        "zho"       "用法:zr_killrepeator <0|1>"
+        "cze"       "Použití: zr_killrepeator <0|1>"
     }
     "Usage Values"
     {
@@ -69,6 +105,12 @@
         "ru"        "0 = Блокировать возрождение | 1 = Разрешить возрождение"
         "de"        "0 = Respawn blockieren | 1 = Respawn erlauben"
         "pt"        "0 = Bloquear respawn | 1 = Permitir respawn"
+        "pl"        "0 = Blokuj odrodzenie | 1 = Zezwalaj na odrodzenie"
+        "tr"        "0 = Yeniden doğmayı engelle | 1 = Yeniden doğmaya izin ver"
+        "it"        "0 = Blocca respawn | 1 = Consenti respawn"
+        "ua"        "0 = Заборонити відродження | 1 = Дозволити відродження"
+        "zho"       "0 = 禁止重生 | 1 = 允許重生"
+        "cze"       "0 = Zakázat respawn | 1 = Povolit respawn"
     }
     "Respawn Disabled"
     {
@@ -79,5 +121,11 @@
         "ru"        "Обнаружен серийный убийца. Возрождение на этот раунд отключено."
         "de"        "Repeat-Killer erkannt. Der Respawn für diese Runde ist deaktiviert."
         "pt"        "Assassino em série detectado. O respawn nesta rodada está desativado."
+        "pl"        "Wykryto powtarzającego zabójcę. Odrodzenie na tę rundę jest wyłączone."
+        "tr"        "Tekrarlayan katil tespit edildi. Bu tur için yeniden doğma devre dışı."
+        "it"        "Killer ricorrente rilevato. Il respawn per questo round è disattivato."
+        "ua"        "Виявлено серійного вбивцю. Відродження на цей раунд вимкнено."
+        "zho"       "偵測到連續殺手。本回合的重生已停用。"
+        "cze"       "Detekován opakovaný zabiják. Respawn pro toto kolo je vypnut."
     }
 } 
